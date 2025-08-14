@@ -161,6 +161,7 @@ def register_routes(app):
             # Try to get file structure info
             rows = 0
             columns = 0
+            column_names = []
             
             try:
                 if file.filename.endswith('.csv'):
@@ -168,22 +169,27 @@ def register_routes(app):
                     import io
                     df = pd.read_csv(io.BytesIO(file_content))
                     rows, columns = df.shape
+                    column_names = df.columns.tolist()[:20]  # Limit to first 20 columns
                 elif file.filename.endswith(('.xlsx', '.xls')):
                     import pandas as pd
                     import io
                     df = pd.read_excel(io.BytesIO(file_content))
                     rows, columns = df.shape
+                    column_names = df.columns.tolist()[:20]  # Limit to first 20 columns
                 else:
                     # For other file types, estimate
                     if file_content:
                         lines = file_content.decode('utf-8', errors='ignore').split('\n')
                         rows = len([line for line in lines if line.strip()])
-                        if rows > 0:
-                            columns = len(lines[0].split(',')) if lines[0] else 1
+                        if rows > 0 and lines[0]:
+                            first_line = lines[0].split(',')
+                            columns = len(first_line)
+                            column_names = [f"Column_{i+1}" for i in range(min(columns, 20))]
             except Exception as parse_error:
                 app.logger.warning(f"Could not parse file structure: {parse_error}")
                 rows = 1000  # Default estimate
                 columns = 10  # Default estimate
+                column_names = [f"Column_{i+1}" for i in range(10)]
             
             # Create file info response
             file_info = {
@@ -191,7 +197,8 @@ def register_routes(app):
                 "filename": file.filename,
                 "size": file_size,
                 "rows": rows,
-                "columns": columns,
+                "columns": column_names,  # Return array of column names instead of count
+                "column_count": columns,   # Keep the count as separate field
                 "type": file.content_type,
                 "status": "uploaded",
                 "upload_time": "2025-08-14T06:50:00Z"

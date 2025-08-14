@@ -155,7 +155,7 @@ class SafeDataApp {
                         <div>
                             <h6 class="card-title mb-1">${file.filename}</h6>
                             <small class="text-muted">
-                                ${file.rows ? file.rows.toLocaleString() : 'Unknown'} rows × ${file.columns || 'Unknown'} columns
+                                ${file.rows ? file.rows.toLocaleString() : 'Unknown'} rows × ${Array.isArray(file.columns) ? file.columns.length : (file.column_count || file.columns || 'Unknown')} columns
                                 • ${this.formatFileSize(file.size || 0)}
                                 • ${file.upload_time ? new Date(file.upload_time).toLocaleDateString() : 'Unknown date'}
                             </small>
@@ -293,14 +293,24 @@ class SafeDataApp {
         document.getElementById('fileInfoName').textContent = fileInfo.filename || 'Unknown';
         document.getElementById('fileInfoSize').textContent = this.formatFileSize(fileInfo.size || 0);
         document.getElementById('fileInfoRows').textContent = fileInfo.rows ? fileInfo.rows.toLocaleString() : 'Unknown';
-        document.getElementById('fileInfoColumns').textContent = fileInfo.columns || 'Unknown';
+        document.getElementById('fileInfoColumns').textContent = Array.isArray(fileInfo.columns) ? fileInfo.columns.length : (fileInfo.column_count || fileInfo.columns || 'Unknown');
 
-        // Update columns list
-        const columnsList = document.getElementById('fileInfoColumns');
-        if (columnsList && fileInfo.columns) {
-            columnsList.innerHTML = fileInfo.columns.map(col => 
-                `<span class="badge bg-secondary me-1">${col}</span>`
+        // Update columns list - show actual column names if available
+        if (Array.isArray(fileInfo.columns) && fileInfo.columns.length > 0) {
+            const columnsContainer = document.createElement('div');
+            columnsContainer.className = 'mt-2';
+            columnsContainer.innerHTML = '<strong>Columns:</strong><br>' + fileInfo.columns.map(col => 
+                `<span class="badge bg-secondary me-1 mb-1">${col}</span>`
             ).join('');
+            
+            // Add after the table
+            const modalBody = document.querySelector('#fileInfoModal .modal-body');
+            const existingColumns = modalBody.querySelector('.columns-container');
+            if (existingColumns) {
+                existingColumns.remove();
+            }
+            columnsContainer.className += ' columns-container';
+            modalBody.appendChild(columnsContainer);
         }
 
         modal.show();
