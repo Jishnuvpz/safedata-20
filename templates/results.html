@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anonymization Results - SafeData 2.0</title>
+    
+    <!-- Bootstrap CSS (Replit theme) -->
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand safedata-logo" href="index.html">
+                <i data-feather="shield" class="me-2"></i>
+                SafeData 2.0
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#anonymize">Anonymize</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="results.html">Results</a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <button class="btn btn-outline-secondary btn-sm" onclick="refreshResults()">
+                            <i data-feather="refresh-cw" class="me-1"></i>
+                            Refresh
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-4">
+        <!-- Page Header -->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="h3">
+                            <i data-feather="bar-chart-2" class="me-2"></i>
+                            Anonymization Results
+                        </h1>
+                        <p class="text-muted mb-0">Detailed analysis of privacy protection and data utility</p>
+                    </div>
+                    <div>
+                        <a href="index.html" class="btn btn-outline-secondary">
+                            <i data-feather="arrow-left" class="me-2"></i>
+                            Back to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Not Found Message (initially hidden) -->
+        <div id="resultNotFound" class="row" style="display: none;">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body text-center py-5">
+                        <i data-feather="search" class="text-muted mb-3" style="width: 64px; height: 64px;"></i>
+                        <h4>Result Not Found</h4>
+                        <p class="text-muted">The requested anonymization result could not be found or may have been deleted.</p>
+                        <a href="index.html" class="btn btn-primary">
+                            <i data-feather="home" class="me-2"></i>
+                            Return to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading State (initially shown) -->
+        <div id="loadingState" class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body text-center py-5">
+                        <div class="loading-spinner mx-auto mb-3" style="width: 3rem; height: 3rem; border-width: 3px;"></div>
+                        <h5>Loading Results...</h5>
+                        <p class="text-muted">Please wait while we retrieve your anonymization results.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Results Content (initially hidden) -->
+        <div id="resultsContent" style="display: none;">
+            <!-- Result Summary Card -->
+            <div class="row mb-4">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">
+                                    <i data-feather="info" class="me-2"></i>
+                                    Result Summary
+                                </h5>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-outline-warning" onclick="simulateAttacks()">
+                                        <i data-feather="shield" class="me-1"></i>
+                                        Simulate Attacks
+                                    </button>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            <i data-feather="download" class="me-1"></i>
+                                            Download
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#" onclick="downloadData('csv')">
+                                                <i data-feather="file-text" class="me-2"></i>CSV Format
+                                            </a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="downloadData('excel')">
+                                                <i data-feather="file-spreadsheet" class="me-2"></i>Excel Format
+                                            </a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="downloadData('json')">
+                                                <i data-feather="code" class="me-2"></i>JSON Format
+                                            </a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <td><strong>Result ID:</strong></td>
+                                            <td id="resultId" class="font-monospace">--</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Original File:</strong></td>
+                                            <td id="originalFile">--</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Anonymization Method:</strong></td>
+                                            <td>
+                                                <span id="anonymizationMethod" class="badge bg-primary">--</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Created:</strong></td>
+                                            <td id="createdAt">--</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Execution Time:</strong></td>
+                                            <td id="executionTime">--</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Data Shape:</strong></td>
+                                            <td id="dataShape">--</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="text-center">
+                                        <h6 class="text-muted mb-3">Overall Protection Score</h6>
+                                        <div class="position-relative d-inline-block">
+                                            <canvas id="overallScoreChart" width="150" height="150"></canvas>
+                                            <div class="position-absolute top-50 start-50 translate-middle text-center">
+                                                <div id="overallScore" class="h4 mb-0">--</div>
+                                                <small class="text-muted">Score</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Privacy & Utility Metrics -->
+            <div class="row mb-4">
+                <div class="col-lg-6">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i data-feather="shield-check" class="me-2"></i>
+                                Privacy Metrics
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <div class="metric-display">
+                                        <div id="privacyScore" class="metric-value">--</div>
+                                        <div class="metric-label">Privacy Score</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="metric-display">
+                                        <div id="reidentificationRisk" class="metric-value">--</div>
+                                        <div class="metric-label">Re-ID Risk</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="metric-display">
+                                        <div id="epsilonUsed" class="metric-value">--</div>
+                                        <div class="metric-label">Epsilon Used</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="metric-display">
+                                        <div id="deltaUsed" class="metric-value">--</div>
+                                        <div class="metric-label">Delta Used</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <h6 class="text-muted mb-2">Privacy Budget Usage</h6>
+                                <div class="mb-2">
+                                    <div class="d-flex justify-content-between">
+                                        <small>Epsilon (ε)</small>
+                                        <small id="epsilonPercentage">0%</small>
+                                    </div>
+                                    <div class="progress mb-2">
+                                        <div id="epsilonProgressBar" class="progress-bar bg-warning" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="d-flex justify-content-between">
+                                        <small>Delta (δ)</small>
+                                        <small id="deltaPercentage">0%</small>
+                                    </div>
+                                    <div class="progress">
+                                        <div id="deltaProgressBar" class="progress-bar bg-info" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i data-feather="activity" class="me-2"></i>
+                                Utility Metrics
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <div class="metric-display">
+                                        <div id="utilityScore" class="metric-value">--</div>
+                                        <div class="metric-label">Overall Utility</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="metric-display">
+                                        <div id="statisticalSimilarity" class="metric-value">--</div>
+                                        <div class="metric-label">Statistical Similarity</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="metric-display">
+                                        <div id="correlationPreservation" class="metric-value">--</div>
+                                        <div class="metric-label">Correlation Preservation</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="metric-display">
+                                        <div id="dataCompleteness" class="metric-value">--</div>
+                                        <div class="metric-label">Data Completeness</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <h6 class="text-muted mb-3">Utility Breakdown</h6>
+                                <div class="chart-container" style="height: 200px;">
+                                    <canvas id="utilityChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attack Simulation Results (hidden by default) -->
+            <div id="attackResults" class="row mb-4" style="display: none;">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i data-feather="shield" class="me-2"></i>
+                                Attack Simulation Results
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="attackResultsContent">
+                                <!-- Attack results will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parameters and Configuration -->
+            <div class="row mb-4">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i data-feather="settings" class="me-2"></i>
+                                Anonymization Parameters
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="parametersTable">
+                                <!-- Parameters will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i data-feather="pie-chart" class="me-2"></i>
+                                Privacy vs Utility Trade-off
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container" style="height: 250px;">
+                                <canvas id="tradeoffChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Preview -->
+            <div class="row mb-4">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">
+                                <i data-feather="eye" class="me-2"></i>
+                                Anonymized Data Preview
+                            </h5>
+                            <small class="text-muted">Showing first 10 rows</small>
+                        </div>
+                        <div class="card-body">
+                            <div id="dataPreview" class="table-responsive">
+                                <!-- Data preview will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions Panel -->
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i data-feather="tool" class="me-2"></i>
+                                Actions
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-4 mb-3">
+                                    <div class="d-grid">
+                                        <button class="btn btn-outline-warning" onclick="simulateAttacks()">
+                                            <i data-feather="shield" class="me-2"></i>
+                                            Run Attack Simulation
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 mb-3">
+                                    <div class="d-grid">
+                                        <button class="btn btn-outline-info" onclick="optimizeParameters()">
+                                            <i data-feather="trending-up" class="me-2"></i>
+                                            Optimize Parameters
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 mb-3">
+                                    <div class="d-grid">
+                                        <button class="btn btn-outline-danger" onclick="deleteResult()">
+                                            <i data-feather="trash-2" class="me-2"></i>
+                                            Delete Result
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Attack Simulation Modal -->
+    <div class="modal fade" id="attackSimulationModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i data-feather="shield" class="me-2"></i>
+                        Privacy Attack Simulation
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="attackSimulationContent">
+                        <div class="text-center py-4">
+                            <div class="loading-spinner mx-auto mb-2"></div>
+                            <p class="text-muted">Running attack simulations...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optimization Modal -->
+    <div class="modal fade" id="optimizationModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i data-feather="trending-up" class="me-2"></i>
+                        Parameter Optimization
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="optimizationContent">
+                        <div class="text-center py-4">
+                            <div class="loading-spinner mx-auto mb-2"></div>
+                            <p class="text-muted">Optimizing parameters...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Results-specific JavaScript -->
+    <script>
+        class ResultsApp {
+            constructor() {
+                this.resultId = null;
+                this.resultData = null;
+                this.charts = {};
+                this.init();
+            }
+
+            async init() {
+                // Get result ID from URL parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                this.resultId = urlParams.get('id');
+
+                if (!this.resultId) {
+                    this.showResultNotFound();
+                    return;
+                }
+
+                await this.loadResultData();
+                feather.replace();
+            }
+
+            async loadResultData() {
+                try {
+                    const response = await fetch(`/api/result/${this.resultId}`);
+                    
+                    if (!response.ok) {
+                        throw new Error('Result not found');
+                    }
+
+                    this.resultData = await response.json();
+                    await this.loadDataPreview();
+                    
+                    this.displayResults();
+                    this.setupCharts();
+                    
+                } catch (error) {
+                    console.error('Failed to load result data:', error);
+                    this.showResultNotFound();
+                }
+            }
+
+            async loadDataPreview() {
+                try {
+                    const response = await fetch(`/api/result/${this.resultId}/preview?rows=10`);
+                    if (response.ok) {
+                        this.previewData = await response.json();
+                    }
+                } catch (error) {
+                    console.error('Failed to load data preview:', error);
+                }
+            }
+
+            showResultNotFound() {
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('resultNotFound').style.display = 'block';
+                feather.replace();
+            }
+
+            displayResults() {
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('resultsContent').style.display = 'block';
+
+                // Update summary information
+                this.updateSummary();
+                this.updateMetrics();
+                this.updateParameters();
+                this.updateDataPreview();
+            }
+
+            updateSummary() {
+                const data = this.resultData;
+                
+                document.getElementById('resultId').textContent = data.result_id;
+                document.getElementById('originalFile').textContent = data.original_file_id;
+                document.getElementById('anonymizationMethod').textContent = data.method.toUpperCase();
+                document.getElementById('createdAt').textContent = new Date(data.created_at).toLocaleString();
+                document.getElementById('dataShape').textContent = `${data.data_shape.rows.toLocaleString()} rows × ${data.data_shape.columns} columns`;
+
+                // Calculate overall score
+                const privacyScore = 1 - (data.privacy_metrics?.re_identification_risk || 0.5);
+                const utilityScore = data.utility_metrics?.overall_utility_score || 0.5;
+                const overallScore = Math.round((privacyScore + utilityScore) / 2 * 100);
+                
+                document.getElementById('overallScore').textContent = overallScore + '%';
+                document.getElementById('overallScore').className = `h4 mb-0 text-${this.getScoreColor(overallScore / 100)}`;
+            }
+
+            updateMetrics() {
+                const privacy = this.resultData.privacy_metrics || {};
+                const utility = this.resultData.utility_metrics || {};
+
+                // Privacy metrics
+                const privacyScore = 1 - (privacy.re_identification_risk || 0.5);
+                document.getElementById('privacyScore').textContent = Math.round(privacyScore * 100) + '%';
+                document.getElementById('privacyScore').className = `metric-value text-${this.getScoreColor(privacyScore)}`;
+
+                document.getElementById('reidentificationRisk').textContent = Math.round((privacy.re_identification_risk || 0) * 100) + '%';
+                document.getElementById('reidentificationRisk').className = `metric-value text-${this.getScoreColor(1 - (privacy.re_identification_risk || 0))}`;
+
+                document.getElementById('epsilonUsed').textContent = (privacy.epsilon_used || 0).toFixed(2);
+                document.getElementById('deltaUsed').textContent = (privacy.delta_used || 0).toExponential(2);
+
+                // Privacy budget bars
+                const epsilonPercent = Math.min(100, (privacy.epsilon_used || 0) / 10 * 100);
+                const deltaPercent = Math.min(100, (privacy.delta_used || 0) / 1e-3 * 100);
+
+                document.getElementById('epsilonPercentage').textContent = Math.round(epsilonPercent) + '%';
+                document.getElementById('epsilonProgressBar').style.width = epsilonPercent + '%';
+                document.getElementById('deltaPercentage').textContent = Math.round(deltaPercent) + '%';
+                document.getElementById('deltaProgressBar').style.width = deltaPercent + '%';
+
+                // Utility metrics
+                document.getElementById('utilityScore').textContent = Math.round((utility.overall_utility_score || 0) * 100) + '%';
+                document.getElementById('utilityScore').className = `metric-value text-${this.getScoreColor(utility.overall_utility_score || 0)}`;
+
+                document.getElementById('statisticalSimilarity').textContent = Math.round((utility.statistical_similarity || 0) * 100) + '%';
+                document.getElementById('correlationPreservation').textContent = Math.round((utility.correlation_preservation || 0) * 100) + '%';
+                document.getElementById('dataCompleteness').textContent = Math.round((utility.data_completeness || 0) * 100) + '%';
+            }
+
+            updateParameters() {
+                const params = this.resultData.parameters || {};
+                const container = document.getElementById('parametersTable');
+
+                const paramRows = Object.entries(params).map(([key, value]) => {
+                    let displayValue = value;
+                    if (typeof value === 'number') {
+                        displayValue = value < 0.001 ? value.toExponential(2) : value.toFixed(3);
+                    }
+                    
+                    return `
+                        <tr>
+                            <td><strong>${this.formatParameterName(key)}:</strong></td>
+                            <td>${displayValue}</td>
+                        </tr>
+                    `;
+                }).join('');
+
+                container.innerHTML = `
+                    <table class="table table-sm">
+                        ${paramRows}
+                    </table>
+                `;
+            }
+
+            updateDataPreview() {
+                if (!this.previewData) {
+                    document.getElementById('dataPreview').innerHTML = `
+                        <div class="text-center py-4">
+                            <p class="text-muted">Data preview not available</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const data = this.previewData.data || [];
+                const columns = this.previewData.columns || [];
+
+                if (data.length === 0) {
+                    document.getElementById('dataPreview').innerHTML = `
+                        <div class="text-center py-4">
+                            <p class="text-muted">No data to preview</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const headerRow = columns.map(col => `<th>${col}</th>`).join('');
+                const dataRows = data.map(row => {
+                    const cells = columns.map(col => {
+                        let value = row[col];
+                        if (typeof value === 'number') {
+                            value = value.toFixed(2);
+                        }
+                        return `<td>${value || '--'}</td>`;
+                    }).join('');
+                    return `<tr>${cells}</tr>`;
+                }).join('');
+
+                document.getElementById('dataPreview').innerHTML = `
+                    <table class="table table-sm table-striped">
+                        <thead>
+                            <tr>${headerRow}</tr>
+                        </thead>
+                        <tbody>
+                            ${dataRows}
+                        </tbody>
+                    </table>
+                `;
+            }
+
+            setupCharts() {
+                this.setupOverallScoreChart();
+                this.setupUtilityChart();
+                this.setupTradeoffChart();
+            }
+
+            setupOverallScoreChart() {
+                const ctx = document.getElementById('overallScoreChart').getContext('2d');
+                const privacy = this.resultData.privacy_metrics || {};
+                const utility = this.resultData.utility_metrics || {};
+                
+                const privacyScore = 1 - (privacy.re_identification_risk || 0.5);
+                const utilityScore = utility.overall_utility_score || 0.5;
+                const overallScore = (privacyScore + utilityScore) / 2;
+
+                this.charts.overallScore = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                            data: [overallScore * 100, (1 - overallScore) * 100],
+                            backgroundColor: [
+                                this.getScoreColorHex(overallScore),
+                                'rgba(108, 117, 125, 0.2)'
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        cutout: '70%'
+                    }
+                });
+            }
+
+            setupUtilityChart() {
+                const ctx = document.getElementById('utilityChart').getContext('2d');
+                const utility = this.resultData.utility_metrics || {};
+
+                this.charts.utility = new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Statistical Similarity', 'Correlation Preservation', 'Data Completeness', 'Distribution Similarity'],
+                        datasets: [{
+                            label: 'Utility Metrics',
+                            data: [
+                                (utility.statistical_similarity || 0) * 100,
+                                (utility.correlation_preservation || 0) * 100,
+                                (utility.data_completeness || 0) * 100,
+                                (utility.distribution_similarity || 0) * 100
+                            ],
+                            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                            borderColor: 'rgb(59, 130, 246)',
+                            pointBackgroundColor: 'rgb(59, 130, 246)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 100
+                            }
+                        }
+                    }
+                });
+            }
+
+            setupTradeoffChart() {
+                const ctx = document.getElementById('tradeoffChart').getContext('2d');
+                const privacy = this.resultData.privacy_metrics || {};
+                const utility = this.resultData.utility_metrics || {};
+
+                const privacyScore = 1 - (privacy.re_identification_risk || 0.5);
+                const utilityScore = utility.overall_utility_score || 0.5;
+
+                this.charts.tradeoff = new Chart(ctx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [{
+                            label: 'Current Result',
+                            data: [{
+                                x: utilityScore * 100,
+                                y: privacyScore * 100
+                            }],
+                            backgroundColor: 'rgb(34, 197, 94)',
+                            borderColor: 'rgb(34, 197, 94)',
+                            pointRadius: 8
+                        }, {
+                            label: 'Ideal Range',
+                            data: [
+                                { x: 70, y: 70 },
+                                { x: 90, y: 90 },
+                                { x: 80, y: 95 }
+                            ],
+                            backgroundColor: 'rgba(59, 130, 246, 0.3)',
+                            borderColor: 'rgb(59, 130, 246)',
+                            pointRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Utility Score (%)'
+                                },
+                                min: 0,
+                                max: 100
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Privacy Score (%)'
+                                },
+                                min: 0,
+                                max: 100
+                            }
+                        }
+                    }
+                });
+            }
+
+            getScoreColor(score) {
+                if (score >= 0.8) return 'success';
+                if (score >= 0.6) return 'warning';
+                return 'danger';
+            }
+
+            getScoreColorHex(score) {
+                if (score >= 0.8) return 'rgb(34, 197, 94)';
+                if (score >= 0.6) return 'rgb(251, 191, 36)';
+                return 'rgb(239, 68, 68)';
+            }
+
+            formatParameterName(name) {
+                return name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            }
+
+            showError(message) {
+                // Simple toast notification
+                const toast = document.createElement('div');
+                toast.className = 'toast align-items-center text-bg-danger border-0 position-fixed top-0 end-0 m-3';
+                toast.innerHTML = `
+                    <div class="d-flex">
+                        <div class="toast-body">${message}</div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    </div>
+                `;
+                document.body.appendChild(toast);
+                const bsToast = new bootstrap.Toast(toast);
+                bsToast.show();
+                toast.addEventListener('hidden.bs.toast', () => toast.remove());
+            }
+
+            showSuccess(message) {
+                const toast = document.createElement('div');
+                toast.className = 'toast align-items-center text-bg-success border-0 position-fixed top-0 end-0 m-3';
+                toast.innerHTML = `
+                    <div class="d-flex">
+                        <div class="toast-body">${message}</div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    </div>
+                `;
+                document.body.appendChild(toast);
+                const bsToast = new bootstrap.Toast(toast);
+                bsToast.show();
+                toast.addEventListener('hidden.bs.toast', () => toast.remove());
+            }
+        }
+
+        // Global functions
+        async function refreshResults() {
+            const refreshButton = document.querySelector('[onclick="refreshResults()"]');
+            const icon = refreshButton.querySelector('i');
+            
+            icon.style.animation = 'spin 1s linear infinite';
+            
+            await resultsApp.loadResultData();
+            
+            setTimeout(() => {
+                icon.style.animation = '';
+            }, 1000);
+        }
+
+        async function downloadData(format) {
+            if (!resultsApp.resultId) return;
+
+            try {
+                const response = await fetch(`/api/result/${resultsApp.resultId}/download?format=${format}`);
+                
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `anonymized_data_${resultsApp.resultId}.${format}`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                    
+                    resultsApp.showSuccess(`Download started (${format.toUpperCase()} format)`);
+                } else {
+                    throw new Error('Download failed');
+                }
+            } catch (error) {
+                console.error('Download error:', error);
+                resultsApp.showError(`Download failed: ${error.message}`);
+            }
+        }
+
+        async function simulateAttacks() {
+            const modal = new bootstrap.Modal(document.getElementById('attackSimulationModal'));
+            modal.show();
+
+            try {
+                const response = await fetch('/api/simulate-attacks', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        original_data_id: resultsApp.resultData.original_file_id,
+                        anonymized_data_id: resultsApp.resultId,
+                        attack_types: ['linkage', 'membership', 'attribute']
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    displayAttackResults(result);
+                    // Also show results in main page
+                    showAttackResultsInPage(result);
+                } else {
+                    throw new Error(result.detail || 'Attack simulation failed');
+                }
+            } catch (error) {
+                console.error('Attack simulation error:', error);
+                resultsApp.showError(`Attack simulation failed: ${error.message}`);
+            }
+        }
+
+        function displayAttackResults(results) {
+            const container = document.getElementById('attackSimulationContent');
+            const riskLevel = results.overall_risk_score;
+            const riskColor = riskLevel > 0.7 ? 'danger' : riskLevel > 0.4 ? 'warning' : 'success';
+
+            container.innerHTML = `
+                <div class="alert alert-${riskColor}">
+                    <h6 class="alert-heading">Overall Risk Score: ${Math.round(riskLevel * 100)}%</h6>
+                    <p class="mb-0">Risk Level: ${riskLevel > 0.7 ? 'High' : riskLevel > 0.4 ? 'Medium' : 'Low'}</p>
+                </div>
+                
+                <div class="row">
+                    ${Object.entries(results.attack_results).map(([attackType, attackResult]) => {
+                        if (typeof attackResult === 'object' && attackResult.success_rate !== undefined) {
+                            return `
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-title">${attackType.replace('_', ' ').toUpperCase()}</h6>
+                                            <div class="metric-value text-${resultsApp.getScoreColor(1 - attackResult.success_rate)}">
+                                                ${Math.round((1 - attackResult.success_rate) * 100)}%
+                                            </div>
+                                            <small class="text-muted">Protection Level</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                        return '';
+                    }).join('')}
+                </div>
+
+                <div class="mt-3">
+                    <h6>Recommendations:</h6>
+                    <ul class="list-unstyled">
+                        ${results.recommendations.map(rec => `<li><i data-feather="arrow-right" class="text-primary me-2" style="width: 16px; height: 16px;"></i>${rec}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+
+            feather.replace();
+        }
+
+        function showAttackResultsInPage(results) {
+            const container = document.getElementById('attackResults');
+            const content = document.getElementById('attackResultsContent');
+            
+            displayAttackResults(results);
+            content.innerHTML = document.getElementById('attackSimulationContent').innerHTML;
+            container.style.display = 'block';
+        }
+
+        async function optimizeParameters() {
+            const modal = new bootstrap.Modal(document.getElementById('optimizationModal'));
+            modal.show();
+
+            try {
+                const response = await fetch('/api/optimize', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        file_id: resultsApp.resultData.original_file_id,
+                        target_privacy_level: 'medium',
+                        utility_weight: 0.5,
+                        privacy_weight: 0.5,
+                        max_iterations: 20
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    displayOptimizationResults(result);
+                } else {
+                    throw new Error(result.detail || 'Optimization failed');
+                }
+            } catch (error) {
+                console.error('Optimization error:', error);
+                resultsApp.showError(`Optimization failed: ${error.message}`);
+            }
+        }
+
+        function displayOptimizationResults(results) {
+            const container = document.getElementById('optimizationContent');
+
+            container.innerHTML = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h6 class="card-title">Optimal Privacy Score</h6>
+                                <div class="metric-value text-success">${Math.round(results.expected_privacy_score * 100)}%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h6 class="card-title">Expected Utility Score</h6>
+                                <div class="metric-value text-info">${Math.round(results.expected_utility_score * 100)}%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <h6>Optimal Parameters:</h6>
+                    <ul class="list-unstyled">
+                        ${Object.entries(results.optimal_parameters).map(([param, value]) => 
+                            `<li><strong>${param}:</strong> ${typeof value === 'number' ? Math.round(value * 1000) / 1000 : value}</li>`
+                        ).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        async function deleteResult() {
+            if (!confirm('Are you sure you want to delete this anonymization result? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/result/${resultsApp.resultId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    resultsApp.showSuccess('Result deleted successfully');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                } else {
+                    throw new Error('Delete failed');
+                }
+            } catch (error) {
+                console.error('Delete error:', error);
+                resultsApp.showError(`Delete failed: ${error.message}`);
+            }
+        }
+
+        // Initialize results app
+        let resultsApp;
+        document.addEventListener('DOMContentLoaded', () => {
+            resultsApp = new ResultsApp();
+        });
+    </script>
+</body>
+</html>

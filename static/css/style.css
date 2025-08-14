@@ -1,0 +1,321 @@
+/* SafeData 2.0 Custom Styles */
+
+/* Custom variables for SafeData branding */
+:root {
+    --safedata-primary: #2563eb;
+    --safedata-secondary: #64748b;
+    --safedata-success: #059669;
+    --safedata-warning: #d97706;
+    --safedata-danger: #dc2626;
+    --safedata-info: #0891b2;
+}
+
+/* Logo and branding */
+.safedata-logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--bs-primary);
+}
+
+/* Custom card styling */
+.card-stat {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: transform 0.15s ease-in-out;
+}
+
+.card-stat:hover {
+    transform: translateY(-2px);
+}
+
+.card-stat .card-body {
+    padding: 1.5rem;
+}
+
+.stat-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.stat-icon.bg-primary-subtle {
+    background-color: rgba(13, 110, 253, 0.1) !important;
+    color: var(--bs-primary);
+}
+
+.stat-icon.bg-success-subtle {
+    background-color: rgba(25, 135, 84, 0.1) !important;
+    color: var(--bs-success);
+}
+
+.stat-icon.bg-warning-subtle {
+    background-color: rgba(255, 193, 7, 0.1) !important;
+    color: var(--bs-warning);
+}
+
+.stat-icon.bg-info-subtle {
+    background-color: rgba(13, 202, 240, 0.1) !important;
+    color: var(--bs-info);
+}
+
+/* File upload styling */
+.file-upload-area {
+    border: 2px dashed var(--bs-border-color);
+    border-radius: 0.5rem;
+    padding: 3rem 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.file-upload-area:hover {
+    border-color: var(--bs-primary);
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+.file-upload-area.dragover {
+    border-color: var(--bs-primary);
+    background-color: rgba(13, 110, 253, 0.1);
+}
+
+.file-upload-icon {
+    font-size: 3rem;
+    color: var(--bs-secondary);
+    margin-bottom: 1rem;
+}
+
+/* Progress bars */
+.progress-bar-animated {
+    background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+    background-size: 1rem 1rem;
+    animation: progress-bar-stripes 1s linear infinite;
+}
+
+/* Alert styling */
+.alert-dismissible .btn-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    padding: 0.75rem;
+}
+
+/* Method selection cards */
+.method-card {
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.method-card:hover {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+.method-card.selected {
+    border-color: var(--bs-primary);
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+.privacy-level-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Privacy metrics display */
+.metric-display {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.metric-label {
+    font-size: 0.875rem;
+    color: var(--bs-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Chart containers */
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin-bottom: 2rem;
+}
+
+.chart-container canvas {
+    max-height: 100%;
+}
+
+/* Results table styling */
+.results-table {
+    font-size: 0.875rem;
+}
+
+.results-table th {
+    background-color: var(--bs-gray-100);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.risk-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.risk-indicator.low {
+    background-color: var(--bs-success);
+}
+
+.risk-indicator.medium {
+    background-color: var(--bs-warning);
+}
+
+.risk-indicator.high {
+    background-color: var(--bs-danger);
+}
+
+/* Loading states */
+.loading-spinner {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Utility classes */
+.text-muted-light {
+    color: rgba(108, 117, 125, 0.7) !important;
+}
+
+.border-dashed {
+    border-style: dashed !important;
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, var(--bs-primary) 0%, #1d4ed8 100%);
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg, var(--bs-success) 0%, #047857 100%);
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(135deg, var(--bs-warning) 0%, #b45309 100%);
+}
+
+.bg-gradient-info {
+    background: linear-gradient(135deg, var(--bs-info) 0%, #0e7490 100%);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .file-upload-area {
+        padding: 2rem 1rem;
+    }
+    
+    .metric-value {
+        font-size: 1.5rem;
+    }
+    
+    .chart-container {
+        height: 250px;
+    }
+}
+
+/* Privacy budget indicator */
+.privacy-budget-bar {
+    height: 8px;
+    background-color: var(--bs-gray-200);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.privacy-budget-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+    border-radius: 4px;
+}
+
+.budget-low {
+    background-color: var(--bs-success);
+}
+
+.budget-medium {
+    background-color: var(--bs-warning);
+}
+
+.budget-high {
+    background-color: var(--bs-danger);
+}
+
+/* Anonymization parameters form */
+.parameter-group {
+    background-color: var(--bs-gray-50);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.parameter-group h6 {
+    color: var(--bs-primary);
+    margin-bottom: 1rem;
+}
+
+/* Toast notifications */
+.toast-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1050;
+}
+
+/* Footer */
+.footer {
+    background-color: var(--bs-gray-100);
+    border-top: 1px solid var(--bs-border-color);
+    padding: 2rem 0;
+    margin-top: 3rem;
+}
+
+/* Dark mode adjustments */
+[data-bs-theme="dark"] .parameter-group {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-bs-theme="dark"] .footer {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-bs-theme="dark"] .results-table th {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-bs-theme="dark"] .privacy-budget-bar {
+    background-color: rgba(255, 255, 255, 0.1);
+}
