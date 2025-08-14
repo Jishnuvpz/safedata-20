@@ -1,5 +1,8 @@
 /* Anonify Custom Styles */
 
+/* Import Modern Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
 /* Ultra-Modern Color Palette with Enhanced Curves */
 :root {
     --anonify-primary: #667eea;
@@ -980,4 +983,550 @@
 [data-bs-theme="dark"] .metric-display {
     background: rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ========== ADVANCED TYPOGRAPHY SYSTEM ========== */
+
+/* Base Typography */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'pnum' 1, 'tnum' 0, 'onum' 1, 'lnum' 0, 'dlig' 0;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings with Modern Typography */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: 'Poppins', 'Inter', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    margin-bottom: 1rem;
+    color: #1a1a2e;
+}
+
+/* Hero Title */
+.hero-title,
+.display-1, .display-2, .display-3, .display-4 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+}
+
+/* Logo Typography */
+.safedata-logo {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: none;
+}
+
+/* Navigation Links */
+.navbar-nav .nav-link {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+    color: rgba(255, 255, 255, 0.9) !important;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.navbar-nav .nav-link:hover {
+    color: white !important;
+    transform: translateY(-1px);
+}
+
+.navbar-nav .nav-link.active {
+    color: var(--accent-neon) !important;
+    font-weight: 600;
+}
+
+/* Card Typography */
+.card-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: -0.01em;
+    color: #2d3748;
+    margin-bottom: 0.75rem;
+}
+
+.card-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #4a5568;
+    letter-spacing: -0.005em;
+}
+
+/* Stat Card Typography */
+.card-stat .stat-value {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-weight: 700;
+    font-size: 2.25rem;
+    line-height: 1;
+    color: white;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    letter-spacing: -0.02em;
+}
+
+.card-stat .stat-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 0.5rem;
+}
+
+/* Method Card Typography */
+.method-card .card-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+}
+
+.method-card .card-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 0.85rem;
+    color: #718096;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+}
+
+/* Privacy Badge Typography */
+.privacy-level-badge {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* Button Typography */
+.btn {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.01em;
+    text-transform: none;
+}
+
+.btn-lg {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 14px 32px;
+}
+
+/* Upload Area Typography */
+.file-upload-area h5 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: white;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+}
+
+.file-upload-area .text-muted {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.85) !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.01em;
+}
+
+/* Section Headings */
+section h2, section .h2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    color: #1a1a2e;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+}
+
+section h3, section .h3 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #2d3748;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+}
+
+/* Upload Section Title */
+#upload h2 {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Parameter Group Typography */
+.parameter-group h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--anonify-primary);
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+}
+
+.parameter-group .form-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: #4a5568;
+    letter-spacing: -0.005em;
+}
+
+/* Metric Display Typography */
+.metric-value {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-weight: 800;
+    font-size: 2.5rem;
+    line-height: 1;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+}
+
+.metric-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #718096;
+    margin-top: 0.5rem;
+}
+
+/* Footer Typography */
+.footer h5 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: white;
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+}
+
+.footer h6 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: -0.005em;
+    margin-bottom: 0.75rem;
+}
+
+.footer p, .footer .text-muted {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7) !important;
+    line-height: 1.6;
+    letter-spacing: -0.005em;
+}
+
+.footer a {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8) !important;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer a:hover {
+    color: var(--accent-neon) !important;
+    text-shadow: 0 0 8px rgba(0, 245, 255, 0.5);
+}
+
+/* Form Typography */
+input, textarea, select, .form-control {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 0.9rem;
+    letter-spacing: -0.005em;
+}
+
+/* Table Typography */
+.table th {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #4a5568;
+}
+
+.table td {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: #2d3748;
+    letter-spacing: -0.005em;
+}
+
+/* Toast/Alert Typography */
+.toast-body, .alert {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    letter-spacing: -0.005em;
+}
+
+/* Dropdown Typography */
+.dropdown-item {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    letter-spacing: -0.005em;
+    color: #2d3748;
+}
+
+/* Progress Bar Labels */
+.progress-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: #718096;
+    letter-spacing: -0.005em;
+}
+
+/* Lead Text */
+.lead {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: -0.01em;
+}
+
+/* Small Text */
+.small, small {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 0.8rem;
+    letter-spacing: -0.005em;
+}
+
+/* Code/Monospace */
+code, pre, .font-monospace {
+    font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Monaco', monospace;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+}
+
+/* ========== CONTEXTUAL COLORS ========== */
+
+/* Hero Section Colors */
+.bg-gradient-primary .hero-title {
+    color: white;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.bg-gradient-primary .lead {
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Light Background Text */
+.bg-light h1, .bg-light h2, .bg-light h3,
+.bg-light .h1, .bg-light .h2, .bg-light .h3 {
+    color: #1a1a2e;
+}
+
+.bg-light p, .bg-light .text-muted {
+    color: #4a5568 !important;
+}
+
+/* Dark Background Text */
+.bg-dark h1, .bg-dark h2, .bg-dark h3,
+.bg-dark .h1, .bg-dark .h2, .bg-dark .h3 {
+    color: white;
+}
+
+.bg-dark p, .bg-dark .text-muted {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Card Background Colors */
+.card h1, .card h2, .card h3, .card h4, .card h5, .card h6,
+.card .h1, .card .h2, .card .h3, .card .h4, .card .h5, .card .h6 {
+    color: #1a1a2e;
+}
+
+.card p, .card .card-text {
+    color: #4a5568;
+}
+
+.card .text-muted {
+    color: #718096 !important;
+}
+
+/* Gradient Text Effects */
+.text-gradient-primary {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-gradient-success {
+    background: var(--gradient-success);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-gradient-warning {
+    background: var(--gradient-warning);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-gradient-info {
+    background: var(--gradient-info);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Text Shadow Utilities */
+.text-shadow-sm {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.text-shadow-md {
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);
+}
+
+.text-shadow-lg {
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.24);
+}
+
+.text-shadow-glow {
+    text-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+}
+
+/* ========== RESPONSIVE TYPOGRAPHY ========== */
+
+@media (max-width: 768px) {
+    body {
+        font-size: 0.9rem;
+    }
+    
+    .hero-title, .display-4 {
+        font-size: 2.25rem !important;
+        line-height: 1.1;
+    }
+    
+    .file-upload-area h5 {
+        font-size: 1.2rem;
+    }
+    
+    .metric-value {
+        font-size: 2rem;
+    }
+    
+    .card-stat .stat-value {
+        font-size: 1.8rem;
+    }
+    
+    section h2, section .h2 {
+        font-size: 1.6rem;
+    }
+    
+    .safedata-logo {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-title, .display-4 {
+        font-size: 1.9rem !important;
+    }
+    
+    .file-upload-area h5 {
+        font-size: 1.1rem;
+    }
+    
+    .metric-value {
+        font-size: 1.75rem;
+    }
+    
+    .card-stat .stat-value {
+        font-size: 1.6rem;
+    }
+}
+
+/* ========== DARK MODE TYPOGRAPHY ========== */
+
+[data-bs-theme="dark"] h1,
+[data-bs-theme="dark"] h2,
+[data-bs-theme="dark"] h3,
+[data-bs-theme="dark"] h4,
+[data-bs-theme="dark"] h5,
+[data-bs-theme="dark"] h6,
+[data-bs-theme="dark"] .h1,
+[data-bs-theme="dark"] .h2,
+[data-bs-theme="dark"] .h3,
+[data-bs-theme="dark"] .h4,
+[data-bs-theme="dark"] .h5,
+[data-bs-theme="dark"] .h6 {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+[data-bs-theme="dark"] p,
+[data-bs-theme="dark"] .card-text {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+[data-bs-theme="dark"] .text-muted {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+[data-bs-theme="dark"] .card-title {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+[data-bs-theme="dark"] .method-card .card-title {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+[data-bs-theme="dark"] .method-card .card-text {
+    color: rgba(255, 255, 255, 0.7);
 }
