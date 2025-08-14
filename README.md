@@ -1,4 +1,4 @@
-# SafeData 2.0 - Advanced Data Anonymization Platform
+# Anonify - Advanced Data Anonymization Platform
 
 🔐 **Government-grade data privacy and anonymization platform** implementing federated learning-based privacy-preserving techniques.
 
