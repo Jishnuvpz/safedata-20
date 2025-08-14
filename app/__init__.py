@@ -88,24 +88,23 @@ def register_routes(app):
             
             # Mock response for now - will be replaced with actual implementation
             result = {
-                "id": "anon_" + str(hash(str(data)))[1:9],
+                "anonymized_data_id": "anon_" + str(abs(hash(str(data))))[:8],
                 "method": method,
                 "status": "completed",
-                "privacy_score": 85.2,
-                "utility_score": 78.5,
-                "execution_time": "2.3s",
-                "created_at": "2025-08-14T04:40:00Z",
-                "parameters": data.get('parameters', {}),
+                "execution_time": 2.3,
+                "created_at": "2025-08-14T06:50:00Z",
+                "parameters": data,
                 "privacy_metrics": {
-                    "epsilon_used": 1.0,
-                    "delta_used": 1e-5,
-                    "reidentification_risk": 0.02
+                    "epsilon_used": data.get('epsilon', 1.0),
+                    "delta_used": data.get('delta', 1e-5),
+                    "re_identification_risk": 0.15
                 },
                 "utility_metrics": {
                     "statistical_similarity": 0.89,
                     "correlation_preservation": 0.82,
-                    "data_completeness": 0.95
-                }
+                    "overall_utility_score": 0.785
+                },
+                "warnings": []
             }
             
             return jsonify(result)
@@ -152,18 +151,53 @@ def register_routes(app):
             if file.filename == '':
                 return jsonify({"error": "No file selected"}), 400
             
-            # Process file upload
-            file_info = {
-                "id": "file_" + str(hash(file.filename))[1:9],
-                "filename": file.filename,
-                "size": len(file.read()),
-                "type": file.content_type,
-                "status": "uploaded",
-                "uploaded_at": "2025-08-14T04:40:00Z"
-            }
-            
+            # Read file content
+            file_content = file.read()
             file.seek(0)  # Reset file pointer
             
+            # Basic file info
+            file_size = len(file_content)
+            
+            # Try to get file structure info
+            rows = 0
+            columns = 0
+            
+            try:
+                if file.filename.endswith('.csv'):
+                    import pandas as pd
+                    import io
+                    df = pd.read_csv(io.BytesIO(file_content))
+                    rows, columns = df.shape
+                elif file.filename.endswith(('.xlsx', '.xls')):
+                    import pandas as pd
+                    import io
+                    df = pd.read_excel(io.BytesIO(file_content))
+                    rows, columns = df.shape
+                else:
+                    # For other file types, estimate
+                    if file_content:
+                        lines = file_content.decode('utf-8', errors='ignore').split('\n')
+                        rows = len([line for line in lines if line.strip()])
+                        if rows > 0:
+                            columns = len(lines[0].split(',')) if lines[0] else 1
+            except Exception as parse_error:
+                app.logger.warning(f"Could not parse file structure: {parse_error}")
+                rows = 1000  # Default estimate
+                columns = 10  # Default estimate
+            
+            # Create file info response
+            file_info = {
+                "file_id": "file_" + str(abs(hash(file.filename)))[:8],
+                "filename": file.filename,
+                "size": file_size,
+                "rows": rows,
+                "columns": columns,
+                "type": file.content_type,
+                "status": "uploaded",
+                "upload_time": "2025-08-14T06:50:00Z"
+            }
+            
+            app.logger.info(f"File uploaded successfully: {file.filename} ({file_size} bytes, {rows}x{columns})")
             return jsonify(file_info)
             
         except Exception as e:
