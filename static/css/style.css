@@ -1014,14 +1014,36 @@ h1, h2, h3, h4, h5, h6,
 .hero-title,
 .display-1, .display-2, .display-3, .display-4 {
     font-family: 'Poppins', sans-serif;
-    font-weight: 800;
+    font-weight: 900;
     line-height: 1.1;
     letter-spacing: -0.04em;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: none;
+    color: white;
+    text-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.6),
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        0 0 60px rgba(102, 126, 234, 0.3),
+        0 0 100px rgba(118, 75, 162, 0.2);
+    position: relative;
+    z-index: 2;
+    animation: titleGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+    0% {
+        text-shadow: 
+            0 4px 16px rgba(0, 0, 0, 0.6),
+            0 8px 32px rgba(0, 0, 0, 0.4),
+            0 0 60px rgba(102, 126, 234, 0.3),
+            0 0 100px rgba(118, 75, 162, 0.2);
+    }
+    100% {
+        text-shadow: 
+            0 4px 20px rgba(0, 0, 0, 0.7),
+            0 8px 36px rgba(0, 0, 0, 0.5),
+            0 0 80px rgba(102, 126, 234, 0.5),
+            0 0 120px rgba(118, 75, 162, 0.4),
+            0 0 160px rgba(139, 92, 246, 0.3);
+    }
 }
 
 /* Logo Typography */
