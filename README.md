@@ -26,6 +26,10 @@
 
 ## 🚀 Live Demo
 
+**Deploy to Render (Free):**
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Jishnuvpz/safedata-20)
+
 Visit the deployed application: [Coming Soon]
 
 ## 💻 Local Development
