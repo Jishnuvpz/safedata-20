@@ -1,4 +1,4 @@
-// SafeData 2.0 Frontend JavaScript
+// Anonify Frontend JavaScript
 
 class SafeDataApp {
     constructor() {
@@ -155,9 +155,9 @@ class SafeDataApp {
                         <div>
                             <h6 class="card-title mb-1">${file.filename}</h6>
                             <small class="text-muted">
-                                ${file.rows.toLocaleString()} rows × ${file.columns} columns
-                                • ${this.formatFileSize(file.size)}
-                                • ${new Date(file.upload_time).toLocaleDateString()}
+                                ${file.rows ? file.rows.toLocaleString() : 'Unknown'} rows × ${file.columns || 'Unknown'} columns
+                                • ${this.formatFileSize(file.size || 0)}
+                                • ${file.upload_time ? new Date(file.upload_time).toLocaleDateString() : 'Unknown date'}
                             </small>
                         </div>
                         <div class="btn-group btn-group-sm">
@@ -290,10 +290,10 @@ class SafeDataApp {
         const modal = new bootstrap.Modal(document.getElementById('fileInfoModal'));
         
         // Update modal content
-        document.getElementById('fileInfoName').textContent = fileInfo.filename;
-        document.getElementById('fileInfoSize').textContent = this.formatFileSize(fileInfo.size);
-        document.getElementById('fileInfoRows').textContent = fileInfo.rows.toLocaleString();
-        document.getElementById('fileInfoColumns').textContent = fileInfo.columns;
+        document.getElementById('fileInfoName').textContent = fileInfo.filename || 'Unknown';
+        document.getElementById('fileInfoSize').textContent = this.formatFileSize(fileInfo.size || 0);
+        document.getElementById('fileInfoRows').textContent = fileInfo.rows ? fileInfo.rows.toLocaleString() : 'Unknown';
+        document.getElementById('fileInfoColumns').textContent = fileInfo.columns || 'Unknown';
 
         // Update columns list
         const columnsList = document.getElementById('fileInfoColumns');
