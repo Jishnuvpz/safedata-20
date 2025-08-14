@@ -100,17 +100,31 @@ class SafeDataApp {
 
     async loadDashboardData() {
         try {
+            console.log('Loading dashboard data...');
+            
             // Load user files and results
             const response = await fetch('/api/list');
+            console.log('API Response status:', response.status);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
             const data = await response.json();
+            console.log('API Response data:', data);
 
             this.updateDashboardStats(data);
-            this.updateFilesList(data.files);
-            this.updateResultsList(data.anonymization_results);
+            this.updateFilesList(data.files || []);
+            this.updateResultsList(data.anonymization_results || []);
+            
+            console.log('Dashboard data loaded successfully');
 
         } catch (error) {
             console.error('Failed to load dashboard data:', error);
-            this.showError('Failed to load dashboard data');
+            this.showError(`Failed to load dashboard data: ${error.message}`);
+            
+            // Show fallback content
+            this.showFallbackContent();
         }
     }
 
@@ -711,6 +725,32 @@ class SafeDataApp {
         container.style.zIndex = '1050';
         document.body.appendChild(container);
         return container;
+    }
+
+    showFallbackContent() {
+        // Show fallback content when API is not available
+        const filesList = document.getElementById('filesList');
+        const resultsList = document.getElementById('resultsList');
+        
+        if (filesList) {
+            filesList.innerHTML = `
+                <div class="alert alert-warning">
+                    <i data-feather="alert-triangle" class="me-2"></i>
+                    Unable to load files. API may be unavailable.
+                </div>
+            `;
+        }
+        
+        if (resultsList) {
+            resultsList.innerHTML = `
+                <div class="alert alert-warning">
+                    <i data-feather="alert-triangle" class="me-2"></i>
+                    Unable to load results. API may be unavailable.
+                </div>
+            `;
+        }
+        
+        feather.replace();
     }
 }
 
