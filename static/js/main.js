@@ -297,20 +297,24 @@ class SafeDataApp {
 
         // Update columns list - show actual column names if available
         if (Array.isArray(fileInfo.columns) && fileInfo.columns.length > 0) {
-            const columnsContainer = document.createElement('div');
-            columnsContainer.className = 'mt-2';
-            columnsContainer.innerHTML = '<strong>Columns:</strong><br>' + fileInfo.columns.map(col => 
-                `<span class="badge bg-secondary me-1 mb-1">${col}</span>`
-            ).join('');
-            
-            // Add after the table
-            const modalBody = document.querySelector('#fileInfoModal .modal-body');
-            const existingColumns = modalBody.querySelector('.columns-container');
-            if (existingColumns) {
-                existingColumns.remove();
+            try {
+                const columnsContainer = document.createElement('div');
+                columnsContainer.className = 'mt-2';
+                columnsContainer.innerHTML = '<strong>Columns:</strong><br>' + fileInfo.columns.map(col => 
+                    `<span class="badge bg-secondary me-1 mb-1">${String(col || 'Unknown')}</span>`
+                ).join('');
+                
+                // Add after the table
+                const modalBody = document.querySelector('#fileInfoModal .modal-body');
+                const existingColumns = modalBody.querySelector('.columns-container');
+                if (existingColumns) {
+                    existingColumns.remove();
+                }
+                columnsContainer.className += ' columns-container';
+                modalBody.appendChild(columnsContainer);
+            } catch (error) {
+                console.warn('Error displaying column names:', error);
             }
-            columnsContainer.className += ' columns-container';
-            modalBody.appendChild(columnsContainer);
         }
 
         modal.show();
