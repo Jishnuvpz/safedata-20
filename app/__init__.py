@@ -4,6 +4,10 @@ from flask import Flask, render_template, request, jsonify, send_file
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from werkzeug.middleware.proxy_fix import ProxyFix
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 class Base(DeclarativeBase):
     pass
@@ -17,7 +21,10 @@ def create_app():
     app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
     # configure the database
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+    database_url = os.environ.get("DATABASE_URL")
+    if database_url and database_url.startswith("postgres://"):
+        database_url = database_url.replace("postgres://", "postgresql://", 1)
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_url or "sqlite:///safedata.db"
     app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
         "pool_recycle": 300,
         "pool_pre_ping": True,
@@ -68,12 +75,12 @@ def register_routes(app):
     def anonymize_data():
         """Main anonymization endpoint"""
         try:
-            # Import privacy services
-            from app.services.anonymization import AnonymizationService
-            from app.services.audit import AuditService
+            # Import privacy services - commented out for initial setup
+            # from app.services.anonymization import AnonymizationService
+            # from app.services.audit import AuditService
             
-            anonymization_service = AnonymizationService()
-            audit_service = AuditService()
+            # anonymization_service = AnonymizationService()
+            # audit_service = AuditService()
             
             # Get request data
             data = request.get_json()
@@ -214,5 +221,59 @@ def register_routes(app):
         ]
         return jsonify(logs)
 
+    @app.route('/api/list')
+    def list_data():
+        """List all files and results for dashboard"""
+        # Mock combined data response
+        files = [
+            {
+                "file_id": "file_12345",
+                "filename": "patient_data.csv",
+                "size": 2048000,
+                "rows": 15000,
+                "columns": 12,
+                "status": "ready",
+                "upload_time": "2025-08-14T04:35:00Z"
+            },
+            {
+                "file_id": "file_67890",
+                "filename": "medical_records.xlsx",
+                "size": 1024000,
+                "rows": 8500,
+                "columns": 18,
+                "status": "ready",
+                "upload_time": "2025-08-14T04:30:00Z"
+            }
+        ]
+        
+        results = [
+            {
+                "id": "anon_12345",
+                "method": "SDG + DP",
+                "privacy_score": 85.2,
+                "utility_score": 78.5,
+                "status": "completed",
+                "created_at": "2025-08-14T04:38:00Z"
+            },
+            {
+                "id": "anon_67890",
+                "method": "Full Pipeline",
+                "privacy_score": 92.1,
+                "utility_score": 71.3,
+                "status": "completed",
+                "created_at": "2025-08-14T04:42:00Z"
+            }
+        ]
+        
+        return jsonify({
+            "total_files": len(files),
+            "total_results": len(results),
+            "files": files,
+            "anonymization_results": results
+        })
+
 # Create the app instance
 app = create_app()
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)
