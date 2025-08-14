@@ -209,10 +209,18 @@ class SafeDataApp {
                             </small>
                         </div>
                         <div class="btn-group btn-group-sm">
-                            <button class="btn btn-outline-success" data-action="download" data-result-id="${result.result_id}" data-format="csv">
-                                <i data-feather="download" style="width: 14px; height: 14px;"></i>
-                            </button>
-                            <button class="btn btn-outline-info" onclick="app.viewResults('${result.result_id}')">
+                            <div class="dropdown">
+                                <button class="btn btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                    <i data-feather="download" style="width: 14px; height: 14px;"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#" onclick="app.downloadResult('${result.id}', 'csv')"><i data-feather="file-text" class="me-2" style="width: 16px;"></i>CSV</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="app.downloadResult('${result.id}', 'xlsx')"><i data-feather="file-text" class="me-2" style="width: 16px;"></i>Excel</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="app.downloadResult('${result.id}', 'pdf')"><i data-feather="file" class="me-2" style="width: 16px;"></i>PDF</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="app.downloadResult('${result.id}', 'docx')"><i data-feather="file-text" class="me-2" style="width: 16px;"></i>Word</a></li>
+                                </ul>
+                            </div>
+                            <button class="btn btn-outline-info" onclick="app.viewResults('${result.id}')">
                                 <i data-feather="bar-chart-2" style="width: 14px; height: 14px;"></i>
                             </button>
                         </div>

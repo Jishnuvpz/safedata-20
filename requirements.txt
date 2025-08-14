@@ -15,3 +15,6 @@ scipy>=1.7.0
 python-dotenv>=1.0.0
 openpyxl
 xlrd
+reportlab
+python-docx
+jinja2

@@ -411,10 +411,18 @@
                             </div>
                             <div class="col-lg-3 col-md-6 mb-3">
                                 <div class="text-center">
-                                    <a href="results.html" class="btn btn-primary">
-                                        <i data-feather="bar-chart-2" class="me-2"></i>
-                                        View Results
-                                    </a>
+                                    <div class="dropdown">
+                                        <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            <i data-feather="download" class="me-2"></i>
+                                            Download
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#" onclick="app.downloadResult(app.currentResultId, 'csv')"><i data-feather="file-text" class="me-2"></i>CSV</a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="app.downloadResult(app.currentResultId, 'xlsx')"><i data-feather="file-text" class="me-2"></i>Excel</a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="app.downloadResult(app.currentResultId, 'pdf')"><i data-feather="file" class="me-2"></i>PDF</a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="app.downloadResult(app.currentResultId, 'docx')"><i data-feather="file-text" class="me-2"></i>Word</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
