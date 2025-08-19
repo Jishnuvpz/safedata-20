@@ -357,8 +357,9 @@ class AnonymizationEngine:
         # Data completeness
         utility_metrics["data_completeness"] = 1.0 - (anonymized_data.isnull().sum().sum() / anonymized_data.size)
         
-        # Overall utility score
-        utility_metrics["overall_utility_score"] = np.mean(list(utility_metrics.values()))
+        # Overall utility score - ensure all values are in [0, 1] range
+        metric_values = [max(0.0, min(1.0, v)) for v in utility_metrics.values() if isinstance(v, (int, float))]
+        utility_metrics["overall_utility_score"] = max(0.0, min(1.0, np.mean(metric_values) if metric_values else 0.5))
         
         return utility_metrics
     
@@ -377,8 +378,12 @@ class AnonymizationEngine:
                     orig_mean, orig_std = original_data[col].mean(), original_data[col].std()
                     anon_mean, anon_std = anonymized_data[col].mean(), anonymized_data[col].std()
                     
-                    mean_similarity = 1 - abs(orig_mean - anon_mean) / (orig_mean + 1e-8)
-                    std_similarity = 1 - abs(orig_std - anon_std) / (orig_std + 1e-8)
+                    # Calculate relative differences and clamp to [0, 1] range
+                    mean_diff = abs(orig_mean - anon_mean) / (abs(orig_mean) + 1e-8)
+                    std_diff = abs(orig_std - anon_std) / (abs(orig_std) + 1e-8)
+                    
+                    mean_similarity = max(0.0, min(1.0, 1.0 - mean_diff))
+                    std_similarity = max(0.0, min(1.0, 1.0 - std_diff))
                     similarities.append((mean_similarity + std_similarity) / 2)
                 else:
                     # For categorical columns, compare value distributions
