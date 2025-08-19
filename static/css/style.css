@@ -3,38 +3,38 @@
 /* Import Modern Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 
-/* Ultra-Modern Color Palette with Enhanced Curves */
+/* Professional Dark Theme Color Palette */
 :root {
-    --anonify-primary: #667eea;
-    --anonify-secondary: #764ba2;
-    --anonify-success: #20bf6b;
-    --anonify-warning: #f7b801;
-    --anonify-danger: #eb3349;
-    --anonify-info: #0fb9b1;
-    --anonify-dark: #1a1a2e;
+    --anonify-primary: #1e3a8a;
+    --anonify-secondary: #1f2937;
+    --anonify-success: #059669;
+    --anonify-warning: #d97706;
+    --anonify-danger: #dc2626;
+    --anonify-info: #0284c7;
+    --anonify-dark: #000000;
     --anonify-light: #f8fafc;
-    --accent-neon: #00f5ff;
-    --accent-purple: #8b5cf6;
-    --accent-pink: #f471b5;
+    --accent-blue: #1d4ed8;
+    --accent-navy: #0f172a;
+    --accent-steel: #475569;
     
-    /* Ultra-Modern Gradients */
-    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #8b5cf6 100%);
-    --gradient-success: linear-gradient(135deg, #20bf6b 0%, #0fb9b1 50%, #06d6a0 100%);
-    --gradient-warning: linear-gradient(135deg, #f7b801 0%, #ffa726 50%, #ff8a65 100%);
-    --gradient-danger: linear-gradient(135deg, #eb3349 0%, #f471b5 50%, #ff6b9d 100%);
-    --gradient-info: linear-gradient(135deg, #0fb9b1 0%, #00f5ff 50%, #667eea 100%);
-    --gradient-aurora: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f471b5 50%, #0fb9b1 75%, #20bf6b 100%);
-    --gradient-cosmic: conic-gradient(from 0deg, #667eea, #764ba2, #8b5cf6, #f471b5, #0fb9b1, #20bf6b, #667eea);
+    /* Professional Dark Gradients */
+    --gradient-primary: linear-gradient(135deg, #000000 0%, #1e3a8a 50%, #1f2937 100%);
+    --gradient-success: linear-gradient(135deg, #000000 0%, #059669 50%, #065f46 100%);
+    --gradient-warning: linear-gradient(135deg, #000000 0%, #d97706 50%, #92400e 100%);
+    --gradient-danger: linear-gradient(135deg, #000000 0%, #dc2626 50%, #991b1b 100%);
+    --gradient-info: linear-gradient(135deg, #000000 0%, #0284c7 50%, #0369a1 100%);
+    --gradient-aurora: linear-gradient(135deg, #000000 0%, #1e3a8a 25%, #1f2937 50%, #0f172a 75%, #000000 100%);
+    --gradient-cosmic: conic-gradient(from 0deg, #000000, #1e3a8a, #1f2937, #0f172a, #475569, #000000);
     
     /* Ultra-Modern Shadows with Glow */
     --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
     --shadow-md: 0 8px 25px rgba(0,0,0,0.12);
     --shadow-lg: 0 15px 35px rgba(0,0,0,0.15);
     --shadow-xl: 0 25px 50px rgba(0,0,0,0.25);
-    --shadow-glow-primary: 0 0 30px rgba(102, 126, 234, 0.4);
-    --shadow-glow-success: 0 0 30px rgba(32, 191, 107, 0.4);
-    --shadow-glow-warning: 0 0 30px rgba(247, 184, 1, 0.4);
-    --shadow-glow-info: 0 0 30px rgba(15, 185, 177, 0.4);
+    --shadow-glow-primary: 0 0 30px rgba(30, 58, 138, 0.4);
+    --shadow-glow-success: 0 0 30px rgba(5, 150, 105, 0.4);
+    --shadow-glow-warning: 0 0 30px rgba(217, 119, 6, 0.4);
+    --shadow-glow-info: 0 0 30px rgba(2, 132, 199, 0.4);
     
     /* Ultra-Modern Border Radius */
     --radius-xs: 8px;
@@ -144,8 +144,8 @@
 
 .file-upload-area.dragover {
     transform: translateY(-12px) scale(1.05);
-    border-color: var(--accent-neon);
-    box-shadow: 0 0 40px rgba(0, 245, 255, 0.6), var(--shadow-xl);
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 40px rgba(29, 78, 216, 0.6), var(--shadow-xl);
 }
 
 .file-upload-area.dragover::before {
@@ -1076,7 +1076,7 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .navbar-nav .nav-link.active {
-    color: var(--accent-neon) !important;
+    color: var(--accent-blue) !important;
     font-weight: 600;
 }
 
