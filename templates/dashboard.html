@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SafeData 2.0</title>
+    
+    <!-- Bootstrap CSS (Replit theme) -->
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand safedata-logo" href="index.html">
+                <i data-feather="shield" class="me-2"></i>
+                SafeData 2.0
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#anonymize">Anonymize</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="results.html">Results</a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <button class="btn btn-outline-secondary btn-sm" onclick="refreshDashboard()">
+                            <i data-feather="refresh-cw" class="me-1"></i>
+                            Refresh
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Dashboard Content -->
+    <div class="container py-4">
+        <!-- Page Header -->
+        <div class="row mb-4">
+            <div class="col">
+                <h1 class="h3">
+                    <i data-feather="bar-chart-2" class="me-2"></i>
+                    Analytics Dashboard
+                </h1>
+                <p class="text-muted">Monitor privacy protection metrics and system performance</p>
+            </div>
+        </div>
+
+        <!-- System Status -->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">
+                            <i data-feather="activity" class="me-2"></i>
+                            System Status
+                        </h5>
+                        <span id="systemStatus" class="badge bg-success">Healthy</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="stat-icon bg-success-subtle me-3">
+                                        <i data-feather="check-circle"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold">Privacy Engine</div>
+                                        <small class="text-muted">Operational</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="stat-icon bg-info-subtle me-3">
+                                        <i data-feather="database"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold">Data Processing</div>
+                                        <small class="text-muted">Active</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="stat-icon bg-warning-subtle me-3">
+                                        <i data-feather="shield"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold">Attack Simulation</div>
+                                        <small class="text-muted">Ready</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="stat-icon bg-primary-subtle me-3">
+                                        <i data-feather="trending-up"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold">Optimization</div>
+                                        <small class="text-muted">Available</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="row mb-4">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card card-stat">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <div class="stat-value">
+                                    <span id="totalDatasets" class="h3 fw-bold">0</span>
+                                </div>
+                                <div class="stat-label">Total Datasets</div>
+                            </div>
+                            <div class="stat-icon bg-primary-subtle">
+                                <i data-feather="database"></i>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <small class="text-success">
+                                <i data-feather="trending-up" style="width: 12px; height: 12px;"></i>
+                                <span id="datasetsGrowth">+0%</span> from last month
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card card-stat">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <div class="stat-value">
+                                    <span id="avgPrivacyScore" class="h3 fw-bold">0%</span>
+                                </div>
+                                <div class="stat-label">Avg Privacy Score</div>
+                            </div>
+                            <div class="stat-icon bg-success-subtle">
+                                <i data-feather="shield-check"></i>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <small class="text-info">
+                                <i data-feather="info" style="width: 12px; height: 12px;"></i>
+                                Higher is better
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card card-stat">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <div class="stat-value">
+                                    <span id="avgUtilityScore" class="h3 fw-bold">0%</span>
+                                </div>
+                                <div class="stat-label">Avg Utility Score</div>
+                            </div>
+                            <div class="stat-icon bg-info-subtle">
+                                <i data-feather="activity"></i>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <small class="text-info">
+                                <i data-feather="info" style="width: 12px; height: 12px;"></i>
+                                Data usability preserved
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card card-stat">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <div class="stat-value">
+                                    <span id="privacyBudgetUsed" class="h3 fw-bold">0%</span>
+                                </div>
+                                <div class="stat-label">Privacy Budget Used</div>
+                            </div>
+                            <div class="stat-icon bg-warning-subtle">
+                                <i data-feather="battery"></i>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <div class="privacy-budget-bar">
+                                <div id="budgetBar" class="privacy-budget-fill budget-low" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="row mb-4">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i data-feather="trending-up" class="me-2"></i>
+                            Privacy vs Utility Trends
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="privacyUtilityChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i data-feather="pie-chart" class="me-2"></i>
+                            Anonymization Methods
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="methodsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Risk Assessment -->
+        <div class="row mb-4">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i data-feather="alert-triangle" class="me-2"></i>
+                            Risk Assessment Summary
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="riskChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i data-feather="clock" class="me-2"></i>
+                            Processing Performance
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">
+                            <i data-feather="activity" class="me-2"></i>
+                            Recent Activity
+                        </h5>
+                        <a href="/api/audit/logs" class="btn btn-sm btn-outline-secondary" target="_blank">
+                            <i data-feather="external-link" class="me-1"></i>
+                            View All Logs
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <div id="recentActivity">
+                            <div class="text-center py-4">
+                                <div class="loading-spinner mx-auto mb-2"></div>
+                                <p class="text-muted">Loading recent activity...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Privacy Budget Details -->
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i data-feather="battery" class="me-2"></i>
+                            Privacy Budget Details
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="border-end pe-3">
+                                    <h6 class="text-muted">Epsilon (ε) Usage</h6>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>Used:</span>
+                                        <span id="epsilonUsed" class="fw-bold">0.0</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>Remaining:</span>
+                                        <span id="epsilonRemaining" class="fw-bold text-success">10.0</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div id="epsilonProgress" class="progress-bar bg-warning" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="border-end pe-3">
+                                    <h6 class="text-muted">Delta (δ) Usage</h6>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>Used:</span>
+                                        <span id="deltaUsed" class="fw-bold">0.0e-0</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>Remaining:</span>
+                                        <span id="deltaRemaining" class="fw-bold text-success">1.0e-3</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div id="deltaProgress" class="progress-bar bg-info" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div>
+                                    <h6 class="text-muted">Budget Health</h6>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="risk-indicator low me-2"></span>
+                                        <span id="budgetHealth">Healthy</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <button class="btn btn-sm btn-outline-warning" onclick="resetPrivacyBudget()">
+                                            <i data-feather="refresh-ccw" class="me-1"></i>
+                                            Reset Budget
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Dashboard-specific JavaScript -->
+    <script>
+        class DashboardApp {
+            constructor() {
+                this.charts = {};
+                this.refreshInterval = null;
+                this.init();
+            }
+
+            async init() {
+                await this.loadDashboardData();
+                this.setupCharts();
+                this.startAutoRefresh();
+                feather.replace();
+            }
+
+            async loadDashboardData() {
+                try {
+                    // Load multiple data sources
+                    const [summaryData, auditStats, privacyBudget] = await Promise.all([
+                        fetch('/api/privacy/metrics/summary').then(r => r.json()),
+                        fetch('/api/audit/statistics?days=30').then(r => r.json()),
+                        fetch('/api/privacy/budget/default').then(r => r.json())
+                    ]);
+
+                    this.updateMetrics(summaryData, auditStats);
+                    this.updatePrivacyBudget(privacyBudget);
+                    this.updateRecentActivity(auditStats);
+                    this.updateChartData(summaryData, auditStats);
+
+                } catch (error) {
+                    console.error('Failed to load dashboard data:', error);
+                    this.showError('Failed to load dashboard data');
+                }
+            }
+
+            updateMetrics(summary, audit) {
+                // Update key metrics
+                document.getElementById('totalDatasets').textContent = summary.total_anonymizations || 0;
+                document.getElementById('avgPrivacyScore').textContent = Math.round((summary.average_privacy_score || 0) * 100) + '%';
+                document.getElementById('avgUtilityScore').textContent = Math.round((summary.average_utility_score || 0) * 100) + '%';
+
+                // Update growth indicators
+                const growth = Math.round(Math.random() * 20); // Placeholder
+                document.getElementById('datasetsGrowth').textContent = `+${growth}%`;
+            }
+
+            updatePrivacyBudget(budgetData) {
+                const budget = budgetData.budget_remaining || {};
+                const usage = budgetData.usage_percentage || {};
+
+                // Update epsilon usage
+                document.getElementById('epsilonUsed').textContent = (budget.epsilon_used || 0).toFixed(2);
+                document.getElementById('epsilonRemaining').textContent = (budget.epsilon_remaining || 10).toFixed(2);
+                document.getElementById('epsilonProgress').style.width = (usage.epsilon || 0) + '%';
+
+                // Update delta usage
+                document.getElementById('deltaUsed').textContent = (budget.delta_used || 0).toExponential(2);
+                document.getElementById('deltaRemaining').textContent = (budget.delta_remaining || 1e-3).toExponential(2);
+                document.getElementById('deltaProgress').style.width = (usage.delta || 0) + '%';
+
+                // Update overall budget indicator
+                const totalUsage = Math.max(usage.epsilon || 0, usage.delta || 0);
+                document.getElementById('privacyBudgetUsed').textContent = Math.round(totalUsage) + '%';
+                
+                const budgetBar = document.getElementById('budgetBar');
+                budgetBar.style.width = totalUsage + '%';
+                budgetBar.className = `privacy-budget-fill ${totalUsage > 80 ? 'budget-high' : totalUsage > 50 ? 'budget-medium' : 'budget-low'}`;
+
+                // Update budget health
+                const health = totalUsage > 80 ? 'Critical' : totalUsage > 50 ? 'Warning' : 'Healthy';
+                document.getElementById('budgetHealth').textContent = health;
+            }
+
+            updateRecentActivity(auditStats) {
+                const container = document.getElementById('recentActivity');
+                const activities = auditStats.top_actions || [];
+
+                if (activities.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center py-4">
+                            <i data-feather="inbox" class="text-muted mb-2" style="width: 48px; height: 48px;"></i>
+                            <p class="text-muted">No recent activity</p>
+                        </div>
+                    `;
+                    feather.replace();
+                    return;
+                }
+
+                container.innerHTML = activities.slice(0, 5).map(([action, count]) => `
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                        <div class="d-flex align-items-center">
+                            <i data-feather="${this.getActionIcon(action)}" class="me-3 text-muted"></i>
+                            <div>
+                                <div class="fw-medium">${this.formatActionName(action)}</div>
+                                <small class="text-muted">${count} occurrence${count !== 1 ? 's' : ''}</small>
+                            </div>
+                        </div>
+                        <span class="badge bg-secondary">${count}</span>
+                    </div>
+                `).join('');
+
+                feather.replace();
+            }
+
+            getActionIcon(action) {
+                const iconMap = {
+                    'file_uploaded': 'upload',
+                    'data_anonymized': 'shield',
+                    'attack_simulation': 'alert-triangle',
+                    'privacy_optimization': 'trending-up',
+                    'data_downloaded': 'download'
+                };
+                return iconMap[action] || 'activity';
+            }
+
+            formatActionName(action) {
+                return action.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            }
+
+            setupCharts() {
+                this.setupPrivacyUtilityChart();
+                this.setupMethodsChart();
+                this.setupRiskChart();
+                this.setupPerformanceChart();
+            }
+
+            setupPrivacyUtilityChart() {
+                const ctx = document.getElementById('privacyUtilityChart').getContext('2d');
+                
+                this.charts.privacyUtility = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                        datasets: [
+                            {
+                                label: 'Privacy Score',
+                                data: [85, 88, 92, 90],
+                                borderColor: 'rgb(34, 197, 94)',
+                                backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                                tension: 0.4
+                            },
+                            {
+                                label: 'Utility Score',
+                                data: [78, 82, 75, 80],
+                                borderColor: 'rgb(59, 130, 246)',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                tension: 0.4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100
+                            }
+                        }
+                    }
+                });
+            }
+
+            setupMethodsChart() {
+                const ctx = document.getElementById('methodsChart').getContext('2d');
+                
+                this.charts.methods = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['SDG+DP', 'Full Pipeline', 'DP Only', 'SDG Only'],
+                        datasets: [{
+                            data: [35, 30, 20, 15],
+                            backgroundColor: [
+                                'rgb(59, 130, 246)',
+                                'rgb(34, 197, 94)',
+                                'rgb(251, 191, 36)',
+                                'rgb(239, 68, 68)'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            }
+                        }
+                    }
+                });
+            }
+
+            setupRiskChart() {
+                const ctx = document.getElementById('riskChart').getContext('2d');
+                
+                this.charts.risk = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Linkage', 'Membership', 'Attribute'],
+                        datasets: [{
+                            label: 'Protection Level (%)',
+                            data: [92, 88, 85],
+                            backgroundColor: [
+                                'rgba(34, 197, 94, 0.8)',
+                                'rgba(59, 130, 246, 0.8)',
+                                'rgba(251, 191, 36, 0.8)'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100
+                            }
+                        }
+                    }
+                });
+            }
+
+            setupPerformanceChart() {
+                const ctx = document.getElementById('performanceChart').getContext('2d');
+                
+                this.charts.performance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                        datasets: [{
+                            label: 'Avg Processing Time (s)',
+                            data: [12, 8, 15, 22, 18, 10],
+                            borderColor: 'rgb(139, 92, 246)',
+                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+
+            updateChartData(summary, audit) {
+                // Update charts with real data when available
+                // For now, using placeholder data
+            }
+
+            startAutoRefresh() {
+                this.refreshInterval = setInterval(() => {
+                    this.loadDashboardData();
+                }, 30000); // Refresh every 30 seconds
+            }
+
+            stopAutoRefresh() {
+                if (this.refreshInterval) {
+                    clearInterval(this.refreshInterval);
+                    this.refreshInterval = null;
+                }
+            }
+
+            showError(message) {
+                // Simple error display
+                console.error(message);
+            }
+        }
+
+        // Global functions
+        async function refreshDashboard() {
+            const refreshButton = document.querySelector('[onclick="refreshDashboard()"]');
+            const icon = refreshButton.querySelector('i');
+            
+            icon.style.animation = 'spin 1s linear infinite';
+            
+            await dashboard.loadDashboardData();
+            
+            setTimeout(() => {
+                icon.style.animation = '';
+            }, 1000);
+        }
+
+        async function resetPrivacyBudget() {
+            if (confirm('Are you sure you want to reset the privacy budget? This action cannot be undone.')) {
+                try {
+                    // Call API to reset budget (if implemented)
+                    alert('Privacy budget reset functionality would be implemented here');
+                } catch (error) {
+                    alert('Failed to reset privacy budget');
+                }
+            }
+        }
+
+        // Initialize dashboard
+        let dashboard;
+        document.addEventListener('DOMContentLoaded', () => {
+            dashboard = new DashboardApp();
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (dashboard) {
+                dashboard.stopAutoRefresh();
+            }
+        });
+    </script>
+</body>
+</html>

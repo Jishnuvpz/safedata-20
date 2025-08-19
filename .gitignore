@@ -130,6 +130,10 @@ venv.bak/
 .venv311/
 .venv_anonify/
 
+# Database
+*.db
+*.sqlite3
+
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -171,3 +175,14 @@ cython_debug/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Additional IDE files
+*.swp
+*.swo
+*~
+
+# Local development
+.local/
+start_app.bat
+start_app.ps1
+safedata.db
